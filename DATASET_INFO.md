@@ -1,169 +1,52 @@
-# Messy Crime Incident Dataset for Data Cleaning Practice
+# 🕵️ Crime Data Cleaning Project
 
-## Overview
+Turning a messy, real-world-style crime incident dataset into a clean, analysis-ready one — using Python and pandas.
 
-This dataset contains simulated crime incident records designed specifically for **data cleaning and preprocessing practice**.
-The data intentionally includes inconsistencies, missing values, duplicates, and formatting issues to mimic real-world messy datasets.
+## 📌 Overview
 
-This makes it ideal for beginners and intermediate learners who want to practice **data cleaning, preprocessing, and exploratory data analysis (EDA)** using tools such as **Python, Pandas, SQL, or Excel**.
+This project takes a raw dataset of **5,250 crime incident records across 33 columns**, riddled with the kind of chaos you'd actually find in the wild: typos, missing values, mismatched formats, and inconsistent categories. The goal was to clean it into something trustworthy enough to actually analyze.
 
----
+## 🧩 The Mess I Started With
 
-## Dataset Characteristics
+|Problem|Example|
+|-|-|
+|Missing values|Up to 1,601 missing values in a single column (`suspect\_race`)|
+|Misspelled categories|`Asslt`, `Homocide`, `Domestc Violence`, `Vandlism`|
+|Inconsistent casing|`'ga'`, `'Ga'`, `'GA'` all meaning the same state|
+|Mixed abbreviations|`'Sou'`, `'South'`, `'southeast'` all describing districts|
+|Numbers mixed with text|`severity` had both `1, 2, 3, 4` AND `Low, Medium, High, Critical`|
+|Inconsistent booleans|`reported\_online` had `True/False`, `Yes/No`, AND `1/0`|
+|Mixed phone formats|`6223265920` vs `241-973-4826`|
+|Multiple date formats|ISO (`2024-04-16 08:45:03`), DD-MM-YYYY (`26-08-2022`), and MM/DD/YYYY (`04/29/2020 08:17`) — all in the same column|
 
-* Number of rows: ~5,000+
-* Number of columns: 30+
-* Format: CSV
-* Data type: Structured tabular data
+## 🛠️ What I Did
 
-The dataset represents crime incidents reported across different districts and cities. Each row corresponds to a single incident with details about the crime, suspect information, reporting method, and investigation status.
+1. **Missing values** — Applied targeted strategies per column: median imputation for numeric fields (`latitude`, `longitude`, `victim\_age`), `'Unknown'` placeholders for categorical fields, and row removal only where critical fields (like `incident\_datetime`) were missing.
+2. **Duplicates** — Checked for exact duplicate rows (found: 0) and near-duplicates on key fields like date, address, and crime type (found: 46, manually reviewed).
+3. **Category standardization** — Built mapping dictionaries to collapse dozens of spelling variants into clean, consistent categories (e.g. 17 messy `crime\_type` variants → 17 standardized labels; district abbreviations → 10 clean district names).
+4. **Format normalization** — Standardized state codes, city names, gender labels, phone number formatting, and boolean-style fields into single consistent formats.
+5. **Date parsing** — Detected and separately parsed three distinct date formats mixed within one column, reconstructing a single reliable `datetime64` column with zero data loss.
 
----
+## 📈 Before → After
 
-## Column Description
+* **33 columns**, all missing values resolved
+* **17 crime type categories** cleaned from 60+ raw spelling/casing variants
+* **10 standardized districts** from a mix of abbreviations and full names
+* **1 unified datetime format** recovered from 3 conflicting formats
+* **0 data loss** on the datetime column despite the format chaos
 
-| Column            | Description                                                  |
-| ----------------- | ------------------------------------------------------------ |
-| incident_id       | Unique identifier for each crime incident                    |
-| crime_type        | Type of crime (e.g., Theft, Assault, Fraud)                  |
-| district          | District where the incident occurred                         |
-| city              | City of the reported crime                                   |
-| state             | State where the incident took place                          |
-| incident_datetime | Date and time when the incident occurred                     |
-| report_datetime   | Date and time when the incident was reported                 |
-| location_type     | Location category such as street, residence, commercial area |
-| weapon_used       | Type of weapon used if applicable                            |
-| suspect_age       | Age of the suspect                                           |
-| suspect_gender    | Gender of the suspect                                        |
-| victim_age        | Age of the victim                                            |
-| victim_gender     | Gender of the victim                                         |
-| severity          | Crime severity level                                         |
-| property_loss_usd | Estimated financial loss from the incident                   |
-| injuries_reported | Indicates if injuries were reported                          |
-| reported_online   | Whether the crime was reported online                        |
-| case_status       | Current investigation status                                 |
-| officer_assigned  | Officer responsible for the case                             |
-| notes             | Additional incident notes                                    |
-
-Some columns may contain missing or inconsistent values intentionally.
-
----
-
-## Intentional Data Issues
-
-This dataset intentionally includes common real-world data problems such as:
-
-* Missing values
-* Duplicate rows
-* Inconsistent text formatting
-* Mixed capitalization
-* Incorrect spellings
-* Inconsistent categorical values
-* Mixed date/time formats
-* Numeric fields stored as text
-* Outliers in numeric columns
-
-These issues make the dataset useful for practicing realistic data cleaning workflows.
-
----
-
-## Example Data Cleaning Tasks
-
-Learners can practice the following tasks:
-
-* Detecting and handling missing values
-* Removing duplicate records
-* Standardizing categorical values
-* Fixing inconsistent capitalization
-* Converting columns to correct data types
-* Parsing date and time columns
-* Identifying outliers
-* Feature engineering
-* Data validation checks
-
----
-
-## Suggested Learning Exercises
-
-### Beginner Tasks
-
-* Load the dataset using Pandas
-* Explore the dataset structure
-* Identify missing values
-* Remove duplicate rows
-* Clean categorical columns
-
-### Intermediate Tasks
-
-* Convert date columns into proper datetime format
-* Handle missing numerical values
-* Standardize inconsistent categories
-* Detect and handle outliers
-* Create summary statistics
-
-### Advanced Tasks
-
-* Perform exploratory data analysis
-* Identify crime patterns by district or city
-* Analyze trends over time
-* Build predictive models
-
----
-
-## Tools You Can Use
-
-This dataset works well with:
+## 🧰 Tools Used
 
 * Python
-* Pandas
-* NumPy
-* SQL
-* Excel
-* Power BI
-* Tableau
-* Data visualization libraries such as Matplotlib and Seaborn
+* pandas
+* Jupyter Notebook
 
----
+## 📂 Files
 
-## Potential Analysis Questions
+* `crime\_incidents\_messy.csv` — the original raw dataset
+* `messy-crime-project.ipynb` — full cleaning notebook, step by step
+* `crime\_data\_cleaned.csv` — the final cleaned output
+* `DATASET\_INFO.md` — the original dataset creator's documentation, describing the raw data's structure and intended use before any cleaning was done
 
-Some questions learners can explore:
 
-* Which districts report the highest number of incidents?
-* What crime types are most common?
-* Are certain crimes more likely to involve weapons?
-* Is there a relationship between crime severity and property loss?
-* How long do cases typically remain open?
 
----
-
-## Who This Dataset Is For
-
-This dataset is ideal for:
-
-* Data science beginners
-* Data analyst learners
-* Students learning data preprocessing
-* Anyone practicing data cleaning techniques
-* Portfolio project practice
-
----
-
-## License
-
-This dataset is released under the **CC0 Public Domain License**, allowing free use for learning, research, and projects.
-
----
-
-## Disclaimer
-
-This dataset is **synthetic and created for educational purposes only**.
-It does not represent real crime records.
-
----
-
-## Contributions
-
-Suggestions for improvements or additional datasets are welcome.
-
-If you found this dataset useful for learning data cleaning or analysis, feel free to use it in your projects or notebooks.
